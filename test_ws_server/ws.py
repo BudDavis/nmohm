@@ -4,12 +4,14 @@ import websockets
 
 import json
 
+import time
+
 class Person:
   def __init__(self, name, age):
     self.name = name
     self.age = age
 
-def handle_command(C):
+def handle_command(C,websocket):
     print(C)
     try:
          CMD = json.loads(C)
@@ -23,6 +25,7 @@ def handle_command(C):
                  print("it is a run")
              case "STATUS":
                  print("it is a status")
+                 r = {"type": "play", "player": "red", "column": 3, "row": 0}
              case "CONFIGURATION":
                  print("it is a config")
              case "LOAD_WAYPOINTS":
@@ -44,13 +47,14 @@ def handle_command(C):
 
     except json.decoder.JSONDecodeError:
         print(">> "+C+" is not JSON")
-
+    return r
 async def main():
     async with websockets.serve(handler, "", 8001):
         await asyncio.Future()  # run forever
 
 async def handler(websocket):
     print(">> open connection")
+    #time.sleep(3);
     while True:
         try:
             message = await websocket.recv()
@@ -58,7 +62,8 @@ async def handler(websocket):
             print("<< closed connection")
             break
         #print(message)
-        handle_command(message)
+        r = handle_command(message,websocket)
+        await websocket.send(json.dumps(r));
 
 
 if __name__ == "__main__":

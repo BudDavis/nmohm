@@ -18,12 +18,6 @@
 <div class="p-5 bg-primary text-white text-center">
   <h1>NMoHM CAE Experience Control</h1>
   <p></p>
-   <div class="card">
-    <div class="card-body">Basic card</div>
-  </div>
-   <div class="card2">
-    <div class="card-body">Basic card</div>
-  </div>
 </div>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -44,6 +38,44 @@
     </ul>
   </div>
 </nav>
+
+
+
+<div class="container mt-3">
+  <h2>Status</h2>
+  <p></p>            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Pod</th>
+        <th>Station</th>
+        <th>Role</th>
+        <th>Elapsed Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id = "sum1"></td>
+        <td id="sum2"></td>
+        <td id="sum3"></td>
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+      </tr>
+      <tr>
+        <td>July</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
 
 <div class="container mt-5">
   <div class="row">
@@ -92,4 +124,112 @@
 
 </body>
 </html>
+<script>
 
+  // A Station is a computer supporting one user of the experience
+class Station {
+  constructor(url,role,id) {
+          this.url = url;
+          this.role =role;
+          this.ws = null;
+    this.id = id;
+  }
+}
+  // A Pod is a group of stations that are going through the experience together
+  // Notionally, a Pod is 3 Stations
+class Pod {
+  constructor(S,name) {
+    this.stations = S;
+    this.name = name;
+  }
+} 
+
+  // system definitions.  perhaps these should be in a file?
+  var Pods = [ new Pod( [ new Station("ws://localhost:8001","COPILOT",1), 
+                          new Station("ws://localhost:8001","COPILOT",2), 
+                          new Station("ws://localhost:8001","COPILOT",3) ], "A Position" ),
+               new Pod( [ new Station("ws://localhost:8001","COPILOT",4), 
+                          new Station("ws://localhost:8001","COPILOT",5), 
+                          new Station("ws://localhost:8001","COPILOT",6) ] ,"B Position" ), 
+               new Pod( [ new Station("ws://localhost:8001","COPILOT",7), 
+                          new Station("ws://localhost:8001","COPILOT",8), 
+                          new Station("ws://localhost:8001","COPILOT",9) ] ,"C Position" )];
+
+ 
+  function open_pod_connections(PS){
+    // This function will attempt to open any ws connection that it can.
+    // it will do nothing to connections that are already opened.
+    // it is expected to call this function periodically.
+    for (let P of PS) {
+      for (let S of P.stations) {
+          //console.log(P.name + "  " + S.role + "   " + S.url + "  " + S.id + "  " + S.ws);
+          if (S.ws == null){
+            // open
+            console.log(" Opening " + S.id);
+            S.ws = new WebSocket(S.url);
+            S.ws.addEventListener("open", ({ data }) => {
+                                    console.log("open event " + S.id);
+                               });
+            // close
+            S.ws.addEventListener("close", ({ data }) => {
+                                    S.ws = null;
+                                    console.log("close event " + S.id);
+                               });
+            // on message
+            S.ws.addEventListener("message", ({ data }) => {
+                                    console.log("message event " + S.id);
+                                    document.getElementById("sum2").innerHTML = S.id;
+                                    console.log(data);
+                               });
+            // on error
+            S.ws.addEventListener("error", ({ data }) => {
+                                    console.log("error event " + S.id);
+                               });
+          }
+      }
+    }
+  }
+
+
+  function request_pod_status(PS){
+    // it is expected to call this function periodically.
+    for (let P of PS) {
+      for (let S of P.stations) {
+          //console.log(P.name + "  " + S.role + "   " + S.url + "  " + S.id + "  " + S.ws);
+          if (S.ws != null && S.ws.readyState == WebSocket.OPEN){
+            // open
+            S.ws.send("{\"cmd\":\"STATUS\"}");
+          }
+      }
+    }
+  }
+
+
+  function kill_one(){
+    // this function is only used for testing.
+    // it can be deleted whenever
+    Pods[1].stations[1].ws.close();
+    Pods[1].stations[1].ws = null;
+  }
+
+
+  function p(){
+     open_pod_connections(Pods);
+  }
+  setInterval(p,10000);
+
+  function r(){
+     request_pod_status(Pods);
+  }
+  setInterval(r,1000);
+
+
+//  const fruits = ["apple", "orange", "cherry"];
+//fruits.forEach(myFunction);
+  // let myVar = setInterval(myTimer, 1000);
+        // function myTimer() {
+        // const d = new Date();
+        // document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+// set tabstop=2 shiftwidth=2 expandtab   
+// retab
+</script>
