@@ -14,7 +14,6 @@
   </style>
 </head>
 <body>
-
 <div class="p-5 bg-primary text-white text-center">
   <h1>NMoHM CAE Experience Control</h1>
   <p></p>
@@ -42,38 +41,111 @@
 
 
 <div class="container mt-3">
-  <h2>Status</h2>
   <p></p>            
   <table class="table">
     <thead>
-      <tr>
-        <th>Pod</th>
-        <th>Station</th>
-        <th>Role</th>
-        <th>Elapsed Time</th>
-      </tr>
+        <th id="podname1"></th> 
+        <th>Station</th> 
+        <th>Role</th> 
+        <th id="Mode">Mode</th> 
+        <th>Time</th> 
+        <th id="KML File">Waypoint File</th> 
     </thead>
     <tbody>
       <tr>
-        <td id = "sum1"></td>
-        <td id="sum2"></td>
-        <td id="sum3"></td>
+        <td></td>
+        <td id="stationid1"></td> 
+        <td id="stationrole1"></td> 
+        <td id="stationmode1"></td> 
+        <td id="stationelapsedtime1"</td> 
+        <td id="stationkmlfile1"</td> 
       </tr>
       <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
+        <td></td>
+        <td id="stationid2"></td> 
+        <td id="stationrole2"></td> 
+        <td id="stationmode2"></td> 
+        <td id="stationelapsedtime2"</td> 
+        <td id="stationkmlfile2"</td> 
+      </tr>
+      <tr> 
+        <td></td>
+        <td id="stationid3"></td> 
+        <td id="stationrole3"></td> 
+        <td id="stationmode3"></td> 
+        <td id="stationelapsedtime3"</td> 
+        <td id="stationkmlfile3"</td> 
+      </tr>
+    </tbody>
+  </table>
+  <table class="table">
+    <thead>
+        <th id="podname2"></th> 
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td id="stationid4"></td> 
+        <td id="stationrole4"></td> 
+        <td id="stationmode4"></td> 
+        <td id="stationelapsedtime4"</td> 
+        <td id="stationkmlfile4"</td> 
       </tr>
       <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
+        <td></td>
+        <td id="stationid5"></td> 
+        <td id="stationrole5"></td> 
+        <td id="stationmode5"></td> 
+        <td id="stationelapsedtime5"</td> 
+        <td id="stationkmlfile5"</td> 
+      </tr>
+      </td>
+        <td></td>
+        <td id="stationid6"></td> 
+        <td id="stationrole6"></td> 
+        <td id="stationmode6"></td> 
+        <td id="stationelapsedtime6"</td> 
+        <td id="stationkmlfile6"</td> 
+      </tr>
+    </tbody>
+  </table>
+  <table class="table">
+    <thead>
+        <th id="podname3"></th> 
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td id="stationid7"></td> 
+        <td id="stationrole7"></td> 
+        <td id="stationmode7"></td> 
+        <td id="stationelapsedtime7"</td> 
+        <td id="stationkmlfile7"</td> 
+      </tr>
+      <tr>
+        <td></td>
+        <td id="stationid8"></td> 
+        <td id="stationrole8"></td> 
+        <td id="stationmode8"></td> 
+        <td id="stationelapsedtime8"</td> 
+        <td id="stationkmlfile8"</td> 
+      </tr>
+      <tr>
+        <td></td>
+        <td id="stationid9"></td> 
+        <td id="stationrole9"></td> 
+        <td id="stationmode9"></td> 
+        <td id="stationelapsedtime9"</td> 
+        <td id="stationkmlfile9"</td> 
       </tr>
     </tbody>
   </table>
 </div>
 
+</div>
+</div>
 
+</div>
 
 
 
@@ -128,11 +200,12 @@
 
   // A Station is a computer supporting one user of the experience
 class Station {
-  constructor(url,role,id) {
+  constructor(url,role,id,kmlfile) {
           this.url = url;
           this.role =role;
           this.ws = null;
-    this.id = id;
+          this.id = id;
+          this.kmlfile = kmlfile;
   }
 }
   // A Pod is a group of stations that are going through the experience together
@@ -145,15 +218,34 @@ class Pod {
 } 
 
   // system definitions.  perhaps these should be in a file?
-  var Pods = [ new Pod( [ new Station("ws://localhost:8001","COPILOT",1), 
-                          new Station("ws://localhost:8001","COPILOT",2), 
-                          new Station("ws://localhost:8001","COPILOT",3) ], "A Position" ),
-               new Pod( [ new Station("ws://localhost:8001","COPILOT",4), 
-                          new Station("ws://localhost:8001","COPILOT",5), 
-                          new Station("ws://localhost:8001","COPILOT",6) ] ,"B Position" ), 
-               new Pod( [ new Station("ws://localhost:8001","COPILOT",7), 
-                          new Station("ws://localhost:8001","COPILOT",8), 
-                          new Station("ws://localhost:8001","COPILOT",9) ] ,"C Position" )];
+  var Pods = [ new Pod( [ new Station("ws://localhost:8001","COPILOT",1,"dustoff.kml") ], "A Pod" )];
+             //             new Station("ws://localhost:8001","MEDIC",2), 
+             //             new Station("ws://localhost:8001","CREWCHIEF",3) ], "A Pod" ),
+             //  new Pod( [ new Station("ws://localhost:8001","MEDIC",4), 
+             //             new Station("ws://localhost:8001","CREWCHIEF",5), 
+             //             new Station("ws://localhost:8001","COPILOT",6) ] ,"B Pod" )
+            //   new Pod( [ new Station("ws://localhost:8001","CREWCHIEF",7), 
+            //              new Station("ws://localhost:8001","COPILOT",8), 
+            //              new Station("ws://localhost:8001","MEDIC",9) ] ,"C Pod" )
+            // ];
+
+  window.onload = function() {
+        let idx=0;
+        let jdx=0;
+        for (let P of Pods) {
+             idx=idx+1; 
+             document.getElementById("podname"+idx).innerHTML = P.name;
+            for (let S of P.stations) {
+               jdx=jdx+1;
+               document.getElementById("stationid"+jdx).innerHTML = S.id;
+               document.getElementById("stationrole"+jdx).innerHTML = S.role;
+               document.getElementById("stationmode"+jdx).innerHTML = "run";
+            }
+        }
+  }
+
+
+
 
  
   function open_pod_connections(PS){
@@ -169,6 +261,10 @@ class Pod {
             S.ws = new WebSocket(S.url);
             S.ws.addEventListener("open", ({ data }) => {
                                     console.log("open event " + S.id);
+                                    var t = S;
+                                    t.cmd="CONFIG";
+                                    S.ws.send(JSON.stringify(t));
+                                    //S.ws.send("{\"cmd\":\"CONFIG\",\"id\":\"" + S.id + "\",\"kmlfile\":\"" + S.kmlfile + "\"}");
                                });
             // close
             S.ws.addEventListener("close", ({ data }) => {
@@ -178,8 +274,19 @@ class Pod {
             // on message
             S.ws.addEventListener("message", ({ data }) => {
                                     console.log("message event " + S.id);
-                                    document.getElementById("sum2").innerHTML = S.id;
                                     console.log(data);
+                                    const obj = JSON.parse(data);
+                                    if (obj.cmd=="STATUS" || obj.cmd=="status") {
+                                        console.log("this is status");
+                                        S.kmlfile = obj.kmlfile;
+                                        S.role = obj.role;
+                                        S.mode = obj.mode;
+                                        var jdx = S.id;
+                                        document.getElementById("stationrole"+jdx).innerHTML = S.role;
+                                        document.getElementById("stationmode"+jdx).innerHTML = S.mode;
+                                        //document.getElementById("stationelapsedtime"+jdx).innerHTML = "run";
+                                        document.getElementById("stationkmlfile"+jdx).innerHTML = S.kmlfile;
+                                    }
                                });
             // on error
             S.ws.addEventListener("error", ({ data }) => {
@@ -218,18 +325,16 @@ class Pod {
   }
   setInterval(p,10000);
 
+
+
+
   function r(){
+     // These are functions that are done on a periodic basis
      request_pod_status(Pods);
+     // check for changed Pod state
   }
-  setInterval(r,1000);
+  setInterval(r,5000);
 
-
-//  const fruits = ["apple", "orange", "cherry"];
-//fruits.forEach(myFunction);
-  // let myVar = setInterval(myTimer, 1000);
-        // function myTimer() {
-        // const d = new Date();
-        // document.getElementById("demo").innerHTML = d.toLocaleTimeString();
 // set tabstop=2 shiftwidth=2 expandtab   
 // retab
 </script>

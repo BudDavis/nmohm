@@ -11,8 +11,9 @@ class Person:
     self.name = name
     self.age = age
 
-def handle_command(C,websocket):
+def handle_command(C,state):
     print(C)
+    r = {}
     try:
          CMD = json.loads(C)
          print(CMD)
@@ -24,29 +25,31 @@ def handle_command(C,websocket):
              case "RUN":
                  print("it is a run")
              case "STATUS":
-                 print("it is a status")
-                 r = {"type": "play", "player": "red", "column": 3, "row": 0}
-             case "CONFIGURATION":
+                 print("it is a status request")
+                 r = {"cmd": "status", 
+                      'id': state['id'],
+                       'role':state['role'],
+                       'mode':state['mode'],
+                       'elapsedtime':state['elapsedtime'],
+                       'kmlfile':state['kmlfile']}
+             case "CONFIG":
                  print("it is a config")
+                 state['kmlfile'] = CMD['kmlfile']
+                 state['role'] = CMD['role']
+                 state['id'] = CMD['id']
+                 print(" in the case ")
+                 print(state['id'])
+                 print(CMD['id'])          
+                 r = {}
              case "LOAD_WAYPOINTS":
                  print("it is a load waypoints")
              case "RETURN WAYPOINTS":
                  print("it is a return waypoints")
 
-
-
-
-
-
-
-
-
-
-
-
-
     except json.decoder.JSONDecodeError:
-        print(">> "+C+" is not JSON")
+        print(">> " + C + " is not JSON")
+        print(" id is ")
+        print(state[id])
     return r
 async def main():
     async with websockets.serve(handler, "", 8001):
@@ -54,7 +57,7 @@ async def main():
 
 async def handler(websocket):
     print(">> open connection")
-    #time.sleep(3);
+    state = {"id":0,"role":"UNKNOWN","kmlfile":"unknown","mode":"unknown","elapsedtime":0}
     while True:
         try:
             message = await websocket.recv()
@@ -62,8 +65,11 @@ async def handler(websocket):
             print("<< closed connection")
             break
         #print(message)
-        r = handle_command(message,websocket)
-        await websocket.send(json.dumps(r));
+        r = handle_command(message,state)
+        print("the id is ")
+        print( state['id'])
+        print("sending "+json.dumps(r))
+        await websocket.send(json.dumps(r))
 
 
 if __name__ == "__main__":
