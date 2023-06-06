@@ -8,6 +8,11 @@ python3 ws.py
 
 ```
 
+http server
+python3 -m http.server
+
+
+
 a quick client
 ```
 python3 -m websockets ws://localhost:8001/

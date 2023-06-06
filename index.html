@@ -261,9 +261,11 @@ class Pod {
             S.ws = new WebSocket(S.url);
             S.ws.addEventListener("open", ({ data }) => {
                                     console.log("open event " + S.id);
-                                    var t = S;
-                                    t.cmd="CONFIG";
-                                    S.ws.send(JSON.stringify(t));
+                                    S.ws.send("{\"cmd\":\"INIT\",\"id\":\"" + S.id + "\"}");
+                                    
+                                    //var t = S;
+                                    //t.cmd="CONFIG";
+                                    //S.ws.send(JSON.stringify(t));
                                     //S.ws.send("{\"cmd\":\"CONFIG\",\"id\":\"" + S.id + "\",\"kmlfile\":\"" + S.kmlfile + "\"}");
                                });
             // close
@@ -284,7 +286,7 @@ class Pod {
                                         var jdx = S.id;
                                         document.getElementById("stationrole"+jdx).innerHTML = S.role;
                                         document.getElementById("stationmode"+jdx).innerHTML = S.mode;
-                                        //document.getElementById("stationelapsedtime"+jdx).innerHTML = "run";
+                                        document.getElementById("stationelapsedtime"+jdx).innerHTML = obj.elapsedtime;
                                         document.getElementById("stationkmlfile"+jdx).innerHTML = S.kmlfile;
                                     }
                                });
@@ -305,7 +307,7 @@ class Pod {
           //console.log(P.name + "  " + S.role + "   " + S.url + "  " + S.id + "  " + S.ws);
           if (S.ws != null && S.ws.readyState == WebSocket.OPEN){
             // open
-            S.ws.send("{\"cmd\":\"STATUS\"}");
+            S.ws.send("{\"cmd\":\"STATUSREQUEST\"}");
           }
       }
     }

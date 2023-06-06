@@ -24,7 +24,7 @@ def handle_command(C,state):
                  print("it is a freeze")
              case "RUN":
                  print("it is a run")
-             case "STATUS":
+             case "STATUSREQUEST":
                  print("it is a status request")
                  r = {"cmd": "status", 
                       'id': state['id'],
@@ -36,10 +36,14 @@ def handle_command(C,state):
                  print("it is a config")
                  state['kmlfile'] = CMD['kmlfile']
                  state['role'] = CMD['role']
+                 #state['id'] = CMD['id']
+                 #print(" in the case ")
+                 #print(state['id'])
+                 #print(CMD['id'])          
+                 r = {}
+             case "INIT":
+                 print("it is an init")
                  state['id'] = CMD['id']
-                 print(" in the case ")
-                 print(state['id'])
-                 print(CMD['id'])          
                  r = {}
              case "LOAD_WAYPOINTS":
                  print("it is a load waypoints")
@@ -57,6 +61,7 @@ async def main():
 
 async def handler(websocket):
     print(">> open connection")
+    zero_time = time.monotonic()
     state = {"id":0,"role":"UNKNOWN","kmlfile":"unknown","mode":"unknown","elapsedtime":0}
     while True:
         try:
@@ -65,10 +70,10 @@ async def handler(websocket):
             print("<< closed connection")
             break
         #print(message)
+        state['elapsedtime'] = time.monotonic() - zero_time;
         r = handle_command(message,state)
-        print("the id is ")
-        print( state['id'])
         print("sending "+json.dumps(r))
+        print(time.monotonic())
         await websocket.send(json.dumps(r))
 
 
