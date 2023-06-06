@@ -286,8 +286,27 @@ class Pod {
                                         var jdx = S.id;
                                         document.getElementById("stationrole"+jdx).innerHTML = S.role;
                                         document.getElementById("stationmode"+jdx).innerHTML = S.mode;
-                                        document.getElementById("stationelapsedtime"+jdx).innerHTML = obj.elapsedtime;
                                         document.getElementById("stationkmlfile"+jdx).innerHTML = S.kmlfile;
+                                        var dt = obj.elapsedtime - S.elapsedtime;
+                                        if (dt>10) {
+                                           S.offline = true;
+                                        }
+                                        else {
+                                           S.offline = false;
+                                        }
+
+                                        S.elapsedtime = Math.round(obj.elapsedtime);
+                                        var min = Math.trunc(S.elapsedtime/60);
+                                        var sec = S.elapsedtime - (min*60);
+                                        if (sec < 10) {
+                                           // instead of :1 i want :01 in the output
+                                           // all the way to 9
+                                           const lut = ["00","01","02","03","04","05","06","07","08","09"]; 
+                                           document.getElementById("stationelapsedtime"+jdx).innerHTML = min.toString() + ":" + lut[sec];
+                                        }
+                                        else {
+                                           document.getElementById("stationelapsedtime"+jdx).innerHTML = min.toString() + ":" + sec.toString();
+                                        }
                                     }
                                });
             // on error
