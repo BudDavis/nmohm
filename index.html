@@ -18,7 +18,7 @@
   <h1>NMoHM CAE Experience Control</h1>
   <p></p>
 </div>
-
+<!--
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <div class="container-fluid">
     <ul class="navbar-nav">
@@ -37,8 +37,7 @@
     </ul>
   </div>
 </nav>
-
-
+</!-->
 
 <div class="container mt-3">
   <p></p>            
@@ -53,7 +52,7 @@
     </thead>
     <tbody>
       <tr>
-        <td></td>
+        <td id=stationonline1></td>
         <td id="stationid1"></td> 
         <td id="stationrole1"></td> 
         <td id="stationmode1"></td> 
@@ -61,7 +60,7 @@
         <td id="stationkmlfile1"</td> 
       </tr>
       <tr>
-        <td></td>
+        <td id=stationonline2></td>
         <td id="stationid2"></td> 
         <td id="stationrole2"></td> 
         <td id="stationmode2"></td> 
@@ -69,7 +68,7 @@
         <td id="stationkmlfile2"</td> 
       </tr>
       <tr> 
-        <td></td>
+        <td id=stationonline3></td>
         <td id="stationid3"></td> 
         <td id="stationrole3"></td> 
         <td id="stationmode3"></td> 
@@ -78,13 +77,28 @@
       </tr>
     </tbody>
   </table>
+  <div class="container-fluid">
+     <button type="button" class="btn btn-primary">Primary</button>
+     <button type="button" class="btn btn-secondary">Secondary</button>
+     <button type="button" class="btn btn-success">Success</button>
+     <button type="button" class="btn btn-danger">Danger</button>
+     <button type="button" class="btn btn-warning">Warning</button>
+     <button type="button" class="btn btn-info">Info</button>
+     <button type="button" class="btn btn-light">Light</button>
+     <button type="button" class="btn btn-dark">Dark</button>
+ </div>
   <table class="table">
     <thead>
         <th id="podname2"></th> 
+        <th>Station</th> 
+        <th>Role</th> 
+        <th id="Mode">Mode</th> 
+        <th>Time</th> 
+        <th id="KML File">Waypoint File</th> 
     </thead>
     <tbody>
       <tr>
-        <td></td>
+        <td id=stationonline4></td>
         <td id="stationid4"></td> 
         <td id="stationrole4"></td> 
         <td id="stationmode4"></td> 
@@ -92,15 +106,15 @@
         <td id="stationkmlfile4"</td> 
       </tr>
       <tr>
-        <td></td>
+        <td id=stationonline5></td>
         <td id="stationid5"></td> 
         <td id="stationrole5"></td> 
         <td id="stationmode5"></td> 
         <td id="stationelapsedtime5"</td> 
         <td id="stationkmlfile5"</td> 
       </tr>
-      </td>
-        <td></td>
+      </tr>
+        <td id=stationonline6></td>
         <td id="stationid6"></td> 
         <td id="stationrole6"></td> 
         <td id="stationmode6"></td> 
@@ -109,13 +123,28 @@
       </tr>
     </tbody>
   </table>
+  <div class="container-fluid">
+     <button type="button" class="btn btn-primary">Primary</button>
+     <button type="button" class="btn btn-secondary">Secondary</button>
+     <button type="button" class="btn btn-success">Success</button>
+     <button type="button" class="btn btn-danger">Danger</button>
+     <button type="button" class="btn btn-warning">Warning</button>
+     <button type="button" class="btn btn-info">Info</button>
+     <button type="button" class="btn btn-light">Light</button>
+     <button type="button" class="btn btn-dark">Dark</button>
+ </div>
   <table class="table">
     <thead>
         <th id="podname3"></th> 
+        <th>Station</th> 
+        <th>Role</th> 
+        <th id="Mode">Mode</th> 
+        <th>Time</th> 
+        <th id="KML File">Waypoint File</th> 
     </thead>
     <tbody>
       <tr>
-        <td></td>
+        <td id=stationonline7></td>
         <td id="stationid7"></td> 
         <td id="stationrole7"></td> 
         <td id="stationmode7"></td> 
@@ -123,7 +152,7 @@
         <td id="stationkmlfile7"</td> 
       </tr>
       <tr>
-        <td></td>
+        <td id=stationonline8></td>
         <td id="stationid8"></td> 
         <td id="stationrole8"></td> 
         <td id="stationmode8"></td> 
@@ -131,7 +160,7 @@
         <td id="stationkmlfile8"</td> 
       </tr>
       <tr>
-        <td></td>
+        <td id=stationonline9></td>
         <td id="stationid9"></td> 
         <td id="stationrole9"></td> 
         <td id="stationmode9"></td> 
@@ -140,13 +169,17 @@
       </tr>
     </tbody>
   </table>
+  <div class="container-fluid">
+     <button type="button" class="btn btn-primary">Primary</button>
+     <button type="button" class="btn btn-secondary">Secondary</button>
+     <button type="button" class="btn btn-success">Success</button>
+     <button type="button" class="btn btn-danger">Danger</button>
+     <button type="button" class="btn btn-warning">Warning</button>
+     <button type="button" class="btn btn-info">Info</button>
+     <button type="button" class="btn btn-light">Light</button>
+     <button type="button" class="btn btn-dark">Dark</button>
+ </div>
 </div>
-
-</div>
-</div>
-
-</div>
-
 
 
 <div class="container mt-5">
@@ -218,16 +251,16 @@ class Pod {
 } 
 
   // system definitions.  perhaps these should be in a file?
-  var Pods = [ new Pod( [ new Station("ws://localhost:8001","COPILOT",1,"dustoff.kml") ], "A Pod" )];
-             //             new Station("ws://localhost:8001","MEDIC",2), 
-             //             new Station("ws://localhost:8001","CREWCHIEF",3) ], "A Pod" ),
-             //  new Pod( [ new Station("ws://localhost:8001","MEDIC",4), 
-             //             new Station("ws://localhost:8001","CREWCHIEF",5), 
-             //             new Station("ws://localhost:8001","COPILOT",6) ] ,"B Pod" )
-            //   new Pod( [ new Station("ws://localhost:8001","CREWCHIEF",7), 
-            //              new Station("ws://localhost:8001","COPILOT",8), 
-            //              new Station("ws://localhost:8001","MEDIC",9) ] ,"C Pod" )
-            // ];
+  var Pods = [ new Pod( [ new Station("ws://localhost:8001","COPILOT",1,"dustoff.kml"),
+                          new Station("ws://localhost:8001","MEDIC",2,"dustoff2.kml"), 
+                          new Station("ws://localhost:8001","CREWCHIEF",3,"dustoff3.kml") ], "A Pod" ),
+               new Pod( [ new Station("ws://localhost:8001","MEDIC",4,"blahblah.kml"), 
+                          new Station("ws://localhost:8001","CREWCHIEF",5,"abc.kml"), 
+                          new Station("ws://localhost:8001","COPILOT",6,"xxx.kml") ] ,"B Pod" ),
+               new Pod( [ new Station("ws://localhost:8001","CREWCHIEF",7,"123.kml"), 
+                          new Station("ws://localhost:8001","COPILOT",8,"456.kml"), 
+                          new Station("ws://localhost:8001","MEDIC",9,"thelast.kml") ] ,"C Pod" )
+             ];
 
   window.onload = function() {
         let idx=0;
@@ -239,7 +272,6 @@ class Pod {
                jdx=jdx+1;
                document.getElementById("stationid"+jdx).innerHTML = S.id;
                document.getElementById("stationrole"+jdx).innerHTML = S.role;
-               document.getElementById("stationmode"+jdx).innerHTML = "run";
             }
         }
   }
@@ -254,7 +286,6 @@ class Pod {
     // it is expected to call this function periodically.
     for (let P of PS) {
       for (let S of P.stations) {
-          //console.log(P.name + "  " + S.role + "   " + S.url + "  " + S.id + "  " + S.ws);
           if (S.ws == null){
             // open
             console.log(" Opening " + S.id);
@@ -262,16 +293,12 @@ class Pod {
             S.ws.addEventListener("open", ({ data }) => {
                                     console.log("open event " + S.id);
                                     S.ws.send("{\"cmd\":\"INIT\",\"id\":\"" + S.id + "\"}");
-                                    
-                                    //var t = S;
-                                    //t.cmd="CONFIG";
-                                    //S.ws.send(JSON.stringify(t));
-                                    //S.ws.send("{\"cmd\":\"CONFIG\",\"id\":\"" + S.id + "\",\"kmlfile\":\"" + S.kmlfile + "\"}");
                                });
             // close
             S.ws.addEventListener("close", ({ data }) => {
                                     S.ws = null;
                                     console.log("close event " + S.id);
+                                    document.getElementById("stationonline" + S.id ).innerHTML = "offline";
                                });
             // on message
             S.ws.addEventListener("message", ({ data }) => {
@@ -288,11 +315,14 @@ class Pod {
                                         document.getElementById("stationmode"+jdx).innerHTML = S.mode;
                                         document.getElementById("stationkmlfile"+jdx).innerHTML = S.kmlfile;
                                         var dt = obj.elapsedtime - S.elapsedtime;
-                                        if (dt>10) {
-                                           S.offline = true;
-                                        }
-                                        else {
-                                           S.offline = false;
+
+                                        if (false) {
+                                           if (dt>10) {
+                                              S.offline = true;
+                                           }
+                                           else {
+                                              S.offline = false;
+                                           }
                                         }
 
                                         S.elapsedtime = Math.round(obj.elapsedtime);
@@ -311,6 +341,7 @@ class Pod {
                                });
             // on error
             S.ws.addEventListener("error", ({ data }) => {
+                                    document.getElementById("stationonline" + S.id ).innerHTML = "error";
                                     console.log("error event " + S.id);
                                });
           }
@@ -322,12 +353,13 @@ class Pod {
   function request_pod_status(PS){
     // it is expected to call this function periodically.
     for (let P of PS) {
+      var jdx = 0;
       for (let S of P.stations) {
-          //console.log(P.name + "  " + S.role + "   " + S.url + "  " + S.id + "  " + S.ws);
           if (S.ws != null && S.ws.readyState == WebSocket.OPEN){
             // open
             S.ws.send("{\"cmd\":\"STATUSREQUEST\"}");
           }
+          jdx=jdx+1;
       }
     }
   }
