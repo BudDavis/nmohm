@@ -20,10 +20,15 @@ def handle_command(C,state):
          match (CMD['cmd'].upper() ):
              case "RESET":
                  print("it is a reset")
+                 state['elapsedtime'] = 0
+                 state['mode'] = "FREEZE"
+                 # go to the first position on the list
              case "FREEZE":
                  print("it is a freeze")
+                 state['mode'] = "FREEZE"
              case "RUN":
                  print("it is a run")
+                 state['mode'] = "RUN"
              case "STATUSREQUEST":
                  print("it is a status request")
                  r = {"cmd": "status", 
@@ -32,23 +37,14 @@ def handle_command(C,state):
                        'mode':state['mode'],
                        'elapsedtime':state['elapsedtime'],
                        'kmlfile':state['kmlfile']}
-             case "CONFIG":
-                 print("it is a config")
-                 state['kmlfile'] = CMD['kmlfile']
-                 state['role'] = CMD['role']
-                 #state['id'] = CMD['id']
-                 #print(" in the case ")
-                 #print(state['id'])
-                 #print(CMD['id'])          
-                 r = {}
              case "INIT":
-                 print("it is an init")
                  state['id'] = CMD['id']
                  r = {}
-             case "LOAD_WAYPOINTS":
+             case "LOADWAYPOINTS":
                  print("it is a load waypoints")
-             case "RETURN WAYPOINTS":
-                 print("it is a return waypoints")
+             case "WAYPOINTFILE":
+                 print("it is WAYPOINTFILE")
+                 state['kmlfile'] = CMD['filename']
 
     except json.decoder.JSONDecodeError:
         print(">> " + C + " is not JSON")
@@ -62,7 +58,7 @@ async def main():
 async def handler(websocket):
     print(">> open connection")
     zero_time = time.monotonic()
-    state = {"id":0,"role":"UNKNOWN","kmlfile":"unknown","mode":"unknown","elapsedtime":0}
+    state = {"id":0,"role":"","kmlfile":"unknown","mode":"FREEZE","elapsedtime":0}
     while True:
         try:
             message = await websocket.recv()
@@ -70,6 +66,7 @@ async def handler(websocket):
             print("<< closed connection")
             break
         #print(message)
+        #if state['mode']=='RUN':
         state['elapsedtime'] = time.monotonic() - zero_time;
         r = handle_command(message,state)
         print("sending "+json.dumps(r))

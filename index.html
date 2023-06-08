@@ -78,15 +78,12 @@
     </tbody>
   </table>
   <div class="container-fluid">
-     <button type="button" class="btn btn-primary">Primary</button>
-     <button type="button" class="btn btn-secondary">Secondary</button>
-     <button type="button" class="btn btn-success">Success</button>
-     <button type="button" class="btn btn-danger">Danger</button>
-     <button type="button" class="btn btn-warning">Warning</button>
-     <button type="button" class="btn btn-info">Info</button>
-     <button type="button" class="btn btn-light">Light</button>
-     <button type="button" class="btn btn-dark">Dark</button>
- </div>
+     <button type="button" class="btn btn-primary" onclick="pod_cmd(1,`RUN`)">Run</button>
+     <button type="button" class="btn btn-secondary" onclick="pod_cmd(1,`FREEZE`)">Freeze</button>
+     <button type="button" class="btn btn-success" onclick="pod_cmd(1,`RESET`)">Reset</button>
+     <input class="form-inline" type="file" id="formFile1"></input>
+     <button type="button" class="btn btn-danger"  onclick="load_file(1)">Load</button>
+  </div>
   <table class="table">
     <thead>
         <th id="podname2"></th> 
@@ -124,15 +121,12 @@
     </tbody>
   </table>
   <div class="container-fluid">
-     <button type="button" class="btn btn-primary">Primary</button>
-     <button type="button" class="btn btn-secondary">Secondary</button>
-     <button type="button" class="btn btn-success">Success</button>
-     <button type="button" class="btn btn-danger">Danger</button>
-     <button type="button" class="btn btn-warning">Warning</button>
-     <button type="button" class="btn btn-info">Info</button>
-     <button type="button" class="btn btn-light">Light</button>
-     <button type="button" class="btn btn-dark">Dark</button>
- </div>
+     <button type="button" class="btn btn-primary" onclick="pod_cmd(2,`RUN`)">Run</button>
+     <button type="button" class="btn btn-secondary" onclick="pod_cmd(2,`FREEZE`)">Freeze</button>
+     <button type="button" class="btn btn-success" onclick="pod_cmd(2,`RESET`)">Reset</button>
+     <input class="form-inline" type="file" id="formFile2"></input>
+     <button type="button" class="btn btn-danger"  onclick="load_file(2)">Load</button>
+  </div>
   <table class="table">
     <thead>
         <th id="podname3"></th> 
@@ -170,15 +164,12 @@
     </tbody>
   </table>
   <div class="container-fluid">
-     <button type="button" class="btn btn-primary">Primary</button>
-     <button type="button" class="btn btn-secondary">Secondary</button>
-     <button type="button" class="btn btn-success">Success</button>
-     <button type="button" class="btn btn-danger">Danger</button>
-     <button type="button" class="btn btn-warning">Warning</button>
-     <button type="button" class="btn btn-info">Info</button>
-     <button type="button" class="btn btn-light">Light</button>
-     <button type="button" class="btn btn-dark">Dark</button>
- </div>
+     <button type="button" class="btn btn-primary" onclick="pod_cmd(3,`RUN`)">Run</button>
+     <button type="button" class="btn btn-secondary" onclick="pod_cmd(3,`FREEZE`)">Freeze</button>
+     <button type="button" class="btn btn-success" onclick="pod_cmd(3,`RESET`)">Reset</button>
+     <input class="form-inline" type="file" id="formFile3"></input>
+     <button type="button" class="btn btn-danger"  onclick="load_file(3)">Load</button>
+  </div>
 </div>
 
 
@@ -288,22 +279,22 @@ class Pod {
       for (let S of P.stations) {
           if (S.ws == null){
             // open
-            console.log(" Opening " + S.id);
+            //console.log(" Opening " + S.id);
             S.ws = new WebSocket(S.url);
             S.ws.addEventListener("open", ({ data }) => {
-                                    console.log("open event " + S.id);
+                                    //console.log("open event " + S.id);
                                     S.ws.send("{\"cmd\":\"INIT\",\"id\":\"" + S.id + "\"}");
                                });
             // close
             S.ws.addEventListener("close", ({ data }) => {
                                     S.ws = null;
-                                    console.log("close event " + S.id);
+                                    //console.log("close event " + S.id);
                                     document.getElementById("stationonline" + S.id ).innerHTML = "offline";
                                });
             // on message
             S.ws.addEventListener("message", ({ data }) => {
-                                    console.log("message event " + S.id);
-                                    console.log(data);
+                                    //console.log("message event " + S.id);
+                                    //console.log(data);
                                     const obj = JSON.parse(data);
                                     if (obj.cmd=="STATUS" || obj.cmd=="status") {
                                         console.log("this is status");
@@ -315,15 +306,6 @@ class Pod {
                                         document.getElementById("stationmode"+jdx).innerHTML = S.mode;
                                         document.getElementById("stationkmlfile"+jdx).innerHTML = S.kmlfile;
                                         var dt = obj.elapsedtime - S.elapsedtime;
-
-                                        if (false) {
-                                           if (dt>10) {
-                                              S.offline = true;
-                                           }
-                                           else {
-                                              S.offline = false;
-                                           }
-                                        }
 
                                         S.elapsedtime = Math.round(obj.elapsedtime);
                                         var min = Math.trunc(S.elapsedtime/60);
@@ -359,17 +341,9 @@ class Pod {
             // open
             S.ws.send("{\"cmd\":\"STATUSREQUEST\"}");
           }
-          jdx=jdx+1;
+          jdx++;
       }
     }
-  }
-
-
-  function kill_one(){
-    // this function is only used for testing.
-    // it can be deleted whenever
-    Pods[1].stations[1].ws.close();
-    Pods[1].stations[1].ws = null;
   }
 
 
@@ -388,6 +362,34 @@ class Pod {
   }
   setInterval(r,5000);
 
+
+
+
+  // these are ugly, and could be done a lot better
+  function pod_cmd(podnum,cmd)
+  {
+      console.log("in run_pod " + podnum);
+      var P = Pods[podnum-1];
+      for (var S of P.stations) {
+          if (S.ws != null){
+             var t = {cmd:cmd,id:S.id};
+             S.ws.send(JSON.stringify(t));
+
+             //S.ws.send("{\"cmd\":\"" + cmd + "\"}");
+          }
+      }
+  }
+  function load_file(podnum)
+  {
+      var P = Pods[podnum-1];
+      var fname = document.getElementById("formFile"+podnum).value;
+      for (let S of P.stations) {
+          if (S.ws != null){
+             var t = {cmd:"WAYPOINTFILE",filename:fname,id:S.id};
+             S.ws.send(JSON.stringify(t));
+          }
+      }
+  }
 // set tabstop=2 shiftwidth=2 expandtab   
 // retab
 </script>
