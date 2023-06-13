@@ -91,9 +91,9 @@ async def handler(websocket):
         #print(message)
         if state['mode'] == "RUN":
            state['elapsedtime'] = state['elapsedtime'] + time.monotonic() - state['lastexectime']
-           state['pos'][0]=state['pos'][0]+0.001;
-           state['pos'][1]=state['pos'][1]+0.001;
-           state['pos'][2]=state['pos'][2]+0.001;
+           state['pos'][0]=state['pos'][0]+0.001 * state['id'];
+           state['pos'][1]=state['pos'][1]+0.001 * state['id'];
+           state['pos'][2]=state['pos'][2]+0.001 * state['id'];
 
         print("<< " + str(time.monotonic())+" "+message)
         r = handle_command(message,state)
