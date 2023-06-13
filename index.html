@@ -340,7 +340,8 @@ class Pod {
       for (let S of P.stations) {
           if (S.ws != null && S.ws.readyState == WebSocket.OPEN){
             // open
-            S.ws.send("{\"cmd\":\"STATUSREQUEST\"}");
+             const t = {cmd:"STATUSREQUEST",id:S.id};
+             S.ws.send(JSON.stringify(t));
           }
           jdx++;
       }
@@ -375,8 +376,6 @@ class Pod {
           if (S.ws != null){
              var t = {cmd:cmd,id:S.id};
              S.ws.send(JSON.stringify(t));
-
-             //S.ws.send("{\"cmd\":\"" + cmd + "\"}");
           }
       }
   }
@@ -394,11 +393,11 @@ class Pod {
 
   var map = L.map('map').setView([0, 0], 3);
 
-  //L.tileLayer('http://localhost:8080/tile/{z}/{x}/{y}.png', {
-  //              maxZoom: 18,
-  //              attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-  //              id: 'base'
-  //          }).addTo(map);
+  L.tileLayer('http://localhost:8080/tile/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                id: 'base'
+            }).addTo(map);
 
 // set tabstop=2 shiftwidth=2 expandtab   
 // retab

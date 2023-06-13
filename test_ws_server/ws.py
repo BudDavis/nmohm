@@ -23,7 +23,7 @@ def handle_command(C,state):
     # the state maintains the current state of this specific 'station'
     #
     # it returns a json string if that is expected
-    r = {}  # the 'return value'
+    r = {};  # the 'return value'
 
     try:
          CMD = json.loads(C)
@@ -47,10 +47,10 @@ def handle_command(C,state):
                  # most of the 'state' variable
                  r = {"cmd": "status", 
                       'id': state['id'],
-                       'role':state['role'],
                        'mode':state['mode'],
                        'elapsedtime':state['elapsedtime'],
-                       'kmlfile':state['kmlfile']}
+                       'kmlfile':state['kmlfile'],
+                       'pos':state['pos']}
              case "INIT":
                  # is this needed or not?
                  # at this point, i think not, but it does provide some human readable
@@ -78,7 +78,10 @@ async def handler(websocket):
     # every connection is going to start out in freeze.  that may not be how the
     # real system works.  in the real system you should be able to connect at anytime
     # and not impact what is currently being done
-    state = {"id":0,"role":"","kmlfile":"unknown","mode":"FREEZE","elapsedtime":0,"lastruntime":0,"lastexectime":0}
+    state = {"id":0,"role":"","kmlfile":"unknown","mode":"FREEZE",
+             "elapsedtime":0,"lastruntime":0,"lastexectime":0,
+              "pos":[14.471,109.028,100.0]}
+
     while True:
         try:
             message = await websocket.recv()
@@ -88,14 +91,19 @@ async def handler(websocket):
         #print(message)
         if state['mode'] == "RUN":
            state['elapsedtime'] = state['elapsedtime'] + time.monotonic() - state['lastexectime']
+           state['pos'][0]=state['pos'][0]+0.001;
+           state['pos'][1]=state['pos'][1]+0.001;
+           state['pos'][2]=state['pos'][2]+0.001;
+
+        print("<< " + str(time.monotonic())+" "+message)
         r = handle_command(message,state)
-        print("sending "+json.dumps(r))
         # lastexectime is the last time this instance was ran
-        state['lastexectime'] = time.monotonic(); 
-        print(time.monotonic())
+        state['lastexectime'] = time.monotonic() 
+        print(">> " + str(time.monotonic())+" " + json.dumps(r))
         await websocket.send(json.dumps(r))
 
 
 if __name__ == "__main__":
+    t0 = time.monotonic();
     asyncio.run(main())
 
