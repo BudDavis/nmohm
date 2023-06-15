@@ -1,0 +1,18 @@
+https://github.com/Overv/openstreetmap-tile-server.git
+
+docker run  -v $PWD/asia-latest.osm.pbf:/data/region.osm.pbf -v osm-data:/data/database/ overv/openstreetmap-tile-server import
+
+
+bdavis@bdavis-Latitude-5420:~$ docker run \
+    -p 8080:80 \
+    -v osm-data:/data/database/ \
+    -d overv/openstreetmap-tile-server \
+    run
+
+
+https://websockets.readthedocs.io/en/stable/index.html
+
+
+
+
+
